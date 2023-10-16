@@ -1,1 +1,0 @@
-# mjkrkirjanurk.github.io
