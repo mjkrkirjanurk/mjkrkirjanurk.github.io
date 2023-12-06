@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KN</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+
+        .mB50 {
+            margin-bottom: 50px;
+        }
+        
+        .mT20 {
+            margin-top: 20px;
+        }
+
+        .mB20 {
+            margin-bottom: 20px;
+        }
+
+        #cameraInput {
+            display: none;
+        }
+
+        /* Style for the custom button */
+        .custom-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .custom-button:hover {
+            background-color: #45a049;
+        }
+
+        #preview {
+            display: none;
+        }
+    </style>
+   
+</head>
+<body>
+    <div class="container">
+        <h1 class="mB50 mT20">Sõidupäevik</h1>
+        <button class="btn btn-primary" onclick="maaraAsukoht()">Määra asukoht</button>
+        <p class="mT20" id="asukoht"></p>
+        <input type="file" id="cameraInput" accept="image/*" capture="user">
+
+        <button class="btn btn-secondary"  onclick="document.getElementById('cameraInput').click();">
+            Pildista odomeetrit
+        </button>
+
+        <br>
+        <img id="preview" src="" alt="Image preview..." style="max-width: 50%; height: 50%;" class="mB20 mT20 ">
+
+        <br>
+        <button class="btn btn-success" id="salvestaNupp" disabled>Salvesta</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('cameraInput').addEventListener('change', function(e) {
+            var file = e.target.files[0];
+            var reader = new FileReader();
+            reader.onloadend = function() {
+                document.getElementById('preview').src = reader.result;
+            }
+            if (file) {
+                reader.readAsDataURL(file);
+                document.getElementById("preview").style.display = "block"
+            }
+        });
+
+        function maaraAsukoht() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(naitaAsukohta, naitaViga);
+            } else {
+                document.getElementById("asukoht").innerHTML = "Geolokatsioon pole toetatud";
+            }
+        }
+
+        function naitaAsukohta(position) {
+            let asukoht = "Latitude: " + position.coords.latitude + 
+            "<br>Longitude: " + position.coords.longitude;
+            document.getElementById("asukoht").innerHTML = asukoht;
+            kontrolliAndmeid();
+        }
+
+        function naitaViga(error) {
+            document.getElementById("asukoht").innerHTML = "Asukoha määramine ebaõnnestus: " + error.message;
+        }
+
+        function pildistaOdomeetrit() {
+            // Siin peaks olema loogika kaamera käivitamiseks
+            // Sõltuvalt brauserist ja seadetest
+            alert("Odomeetri pildistamise funktsioon pole siin näitesse lisatud.");
+            kontrolliAndmeid();
+        }
+
+        function kontrolliAndmeid() {
+            // Eeldame, et kõik vajalikud andmed on kogutud
+            document.getElementById("salvestaNupp").disabled = false;
+        }
+    </script>
+</body>
+</html>
